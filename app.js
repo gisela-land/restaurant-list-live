@@ -11,7 +11,7 @@ app.use(express.static('public'))
 app.use('/webfonts', express.static('./public/stylesheets/webfonts'))
 
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurantList.results })
+  res.render('index', { restaurants: restaurantList.results, hasResults: true })
 })
 
 app.get('/restaurants/:rest_id', (req, res) => {
@@ -27,7 +27,11 @@ app.get('/search', (req, res) => {
   const restaurants = restaurantList.results.filter((rest) => {
     return rest.name.toLowerCase().includes(keyword.toLowerCase())
   })
-  res.render('index', { restaurants: restaurants, keyword: keyword })
+  let hasResults = false
+  if (restaurants.length > 0) {
+    hasResults = true
+  }
+  res.render('index', { restaurants: restaurants, keyword: keyword, hasResults: hasResults })
 })
 
 app.listen(port, () => {
