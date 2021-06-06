@@ -26,11 +26,35 @@ app.set('view engine', 'handlebars')
 // Set routes
 app.use(express.static('public'))
 app.use('/webfonts', express.static('./public/stylesheets/webfonts'))
+// body-parser
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
   return Restaurant.find()
     .lean()
     .then((rests) => res.render('index', { restaurants: rests, hasResults: true }))
+    .catch((error) => console.log(error))
+})
+
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  // console.log('*** req.body = ', req.body)
+  return Restaurant.create({
+    name: req.body.name,
+    name_en: req.body.name_en,
+    category: req.body.category,
+    image: req.body.image,
+    location: req.body.location,
+    phone: req.body.phone,
+    google_map: req.body.google_map,
+    rating: req.body.rating,
+    description: req.body.description,
+  })
+    .then(() => res.redirect('/'))
+    .catch((error) => console.log(error))
 })
 
 // app.get('/restaurants/:rest_id', (req, res) => {
