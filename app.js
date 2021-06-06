@@ -57,13 +57,13 @@ app.post('/restaurants', (req, res) => {
     .catch((error) => console.log(error))
 })
 
-// app.get('/restaurants/:rest_id', (req, res) => {
-//   const restaurantId = req.params.rest_id;
-//   const restaurant = restaurantList.results.find((rest) => {
-//     return rest.id.toString() === restaurantId
-//   })
-//   res.render('show', { restaurant: restaurant })
-// })
+app.get('/restaurants/:rest_id', (req, res) => {
+  const restId = req.params.rest_id;
+  return Restaurant.findById(restId)
+    .lean()
+    .then((restaurant) => res.render('show', { restaurant: restaurant }))
+    .catch((error) => console.log(error))
+})
 
 // app.get('/search', (req, res) => {
 //   const keyword = req.query.keyword

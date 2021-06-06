@@ -17,9 +17,11 @@
           地址：
         </span>
         {{restaurant.location}}
+        {{#if restaurant.google_map}}
         <a href="{{restaurant.google_map}}" class="text-secondary" target="_blank">
           <i class="fas fa-location-arrow pr-2 fa-xs"></i>
         </a>
+        {{/if}}
       </p>
 
       <p class="mb-1">
