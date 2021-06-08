@@ -30,7 +30,12 @@
         {{#each restaurants}}
         <a href="/restaurants/{{this._id}}" class="text-secondary">
           <div class="card mb-3">
-            <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+            <img class="card-img-top" src="
+              {{#if this.image}}
+              {{this.image}}
+              {{else}}
+              https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png
+              {{/if}}" alt="{{this.name}}">
             <div class="card-body p-3">
               <h6 class="card-title mb-1">{{this.name}}</h6>
 
