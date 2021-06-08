@@ -123,17 +123,23 @@ app.post('/restaurants/:rest_id/delete', (req, res) => {
     .catch((error) => console.log(error))
 })
 
-// app.get('/search', (req, res) => {
-//   const keyword = req.query.keyword
-//   const restaurants = restaurantList.results.filter((rest) => {
-//     return rest.name.toLowerCase().includes(keyword.toLowerCase())
-//   })
-//   let hasResults = false
-//   if (restaurants.length > 0) {
-//     hasResults = true
-//   }
-//   res.render('index', { restaurants: restaurants, keyword: keyword, hasResults: hasResults })
-// })
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword
+  return Restaurant.find()
+    .lean()
+    .then((rests) => {
+      const restaurants = rests.filter((rest) => {
+        return rest.name.toLowerCase().includes(keyword.toLowerCase())
+      })
+
+      let hasResults = false
+      if (restaurants.length > 0) {
+        hasResults = true
+      }
+      return res.render('index', { restaurants: restaurants, keyword: keyword, hasResults: hasResults })
+    })
+    .catch((error) => console.log(error))
+})
 
 app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
