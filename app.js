@@ -5,6 +5,14 @@ const Restaurant = require('./models/restaurant.js')
 
 const app = express()
 const port = 3000
+const categories = ["中東料理", "中式餐廳", "日本料理", "南洋料理", "義式餐廳", "美式餐廳", "酒吧", "咖啡", "甜點", "其他"]
+const cateSelectStatus = []
+for (let i = 0; i < categories.length; i++) {
+  const cate = {}
+  cate.name = categories[i]
+  cate.selected = false
+  cateSelectStatus.push(cate)
+}
 
 // connect mongodb
 mongoose.connect('mongodb://localhost/rest-list', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -41,7 +49,6 @@ app.get('/restaurants/new', (req, res) => {
 })
 
 app.post('/restaurants', (req, res) => {
-  // console.log('*** req.body = ', req.body)
   return Restaurant.create({
     name: req.body.name,
     name_en: req.body.name_en,
@@ -65,11 +72,25 @@ app.get('/restaurants/:rest_id', (req, res) => {
     .catch((error) => console.log(error))
 })
 
+function checkSelectedCategory(category) {
+  for (let i = 0; i < cateSelectStatus.length; i++) {
+    if (cateSelectStatus[i].name === category) {
+      cateSelectStatus[i].selected = true
+    } else {
+      cateSelectStatus[i].selected = false
+    }
+  }
+  return cateSelectStatus
+}
+
 app.get('/restaurants/:rest_id/edit', (req, res) => {
   const restId = req.params.rest_id;
   return Restaurant.findById(restId)
     .lean()
-    .then((restaurant) => res.render('edit', { restaurant: restaurant }))
+    .then((restaurant) => {
+      const cateStatus = checkSelectedCategory(restaurant.category)
+      return res.render('edit', { restaurant: restaurant, newCategory: cateStatus })
+    })
     .catch((error) => console.log(error))
 })
 
