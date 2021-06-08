@@ -114,6 +114,15 @@ app.post('/restaurants/:rest_id/edit', (req, res) => {
     .catch((error) => console.log(error))
 })
 
+app.post('/restaurants/:rest_id/delete', (req, res) => {
+  const id = req.params.rest_id
+
+  return Restaurant.findById(id)
+    .then((rest) => rest.remove())
+    .then(() => res.redirect('/'))
+    .catch((error) => console.log(error))
+})
+
 // app.get('/search', (req, res) => {
 //   const keyword = req.query.keyword
 //   const restaurants = restaurantList.results.filter((rest) => {
