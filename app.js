@@ -125,6 +125,7 @@ app.post('/restaurants/:rest_id/delete', (req, res) => {
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
+
   return Restaurant.find()
     .lean()
     .then((rests) => {
@@ -139,6 +140,19 @@ app.get('/search', (req, res) => {
       return res.render('index', { restaurants: restaurants, keyword: keyword, hasResults: hasResults })
     })
     .catch((error) => console.log(error))
+
+  /*
+  return Restaurant.find({ "name": { $regex: keyword } })
+    .lean()
+    .then((restaurants) => {
+      let hasResults = false
+      if (restaurants.length > 0) {
+        hasResults = true
+      }
+      return res.render('index', { restaurants: restaurants, keyword: keyword, hasResults: hasResults })
+    })
+    .catch((error) => console.log(error))
+  */
 })
 
 app.listen(port, () => {
