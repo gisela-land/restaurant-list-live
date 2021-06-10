@@ -129,10 +129,7 @@ app.get('/search', (req, res) => {
   return Restaurant.find({ "name": { $regex: keyword, $options: 'i' } })
     .lean()
     .then((restaurants) => {
-      let hasResults = false
-      if (restaurants.length > 0) {
-        hasResults = true
-      }
+      const hasResults = (restaurants.length > 0) ? true : false
       return res.render('index', { restaurants: restaurants, keyword: keyword, hasResults: hasResults })
     })
     .catch((error) => console.log(error))
