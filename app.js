@@ -1,6 +1,8 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const methodOverride = require('method-override')
+
 const Restaurant = require('./models/restaurant.js')
 
 const app = express()
@@ -30,12 +32,13 @@ db.once('open', () => {
 // Set handlebars
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
-
 // Set routes
 app.use(express.static('public'))
 app.use('/webfonts', express.static('./public/stylesheets/webfonts'))
 // body-parser
 app.use(express.urlencoded({ extended: true }))
+// method-override
+app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
   return Restaurant.find()
@@ -94,7 +97,7 @@ app.get('/restaurants/:rest_id/edit', (req, res) => {
     .catch((error) => console.log(error))
 })
 
-app.post('/restaurants/:rest_id/edit', (req, res) => {
+app.put('/restaurants/:rest_id', (req, res) => {
   const id = req.params.rest_id
 
   return Restaurant.findById(id)
@@ -114,7 +117,7 @@ app.post('/restaurants/:rest_id/edit', (req, res) => {
     .catch((error) => console.log(error))
 })
 
-app.post('/restaurants/:rest_id/delete', (req, res) => {
+app.delete('/restaurants/:rest_id', (req, res) => {
   const id = req.params.rest_id
 
   return Restaurant.findById(id)
