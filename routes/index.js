@@ -10,4 +10,3 @@ router.use('/restaurants', restaurants)
 router.use('/search', search)
 
 module.exports = router
-

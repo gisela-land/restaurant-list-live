@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Restaurant = require('../../models/restaurant.js')
-const categories = ["中東料理", "中式餐廳", "日本料理", "南洋料理", "義式餐廳", "美式餐廳", "酒吧", "咖啡", "甜點", "其他"]
+const categories = ['中東料理', '中式餐廳', '日本料理', '南洋料理', '義式餐廳', '美式餐廳', '酒吧', '咖啡', '甜點', '其他']
 const cateSelectStatus = []
 for (let i = 0; i < categories.length; i++) {
   const cate = {}
@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
     phone: req.body.phone,
     google_map: req.body.google_map,
     rating: req.body.rating,
-    description: req.body.description,
+    description: req.body.description
   })
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
 
 // 閱讀一筆資料
 router.get('/:rest_id', (req, res) => {
-  const restId = req.params.rest_id;
+  const restId = req.params.rest_id
   return Restaurant.findById(restId)
     .lean()
     .then((restaurant) => res.render('show', { restaurant: restaurant }))
@@ -55,7 +55,7 @@ function checkSelectedCategory(category) {
 
 // GET 編輯頁面
 router.get('/:rest_id/edit', (req, res) => {
-  const restId = req.params.rest_id;
+  const restId = req.params.rest_id
   return Restaurant.findById(restId)
     .lean()
     .then((restaurant) => {
