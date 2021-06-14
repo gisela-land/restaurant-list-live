@@ -1,17 +1,41 @@
-<!-- search bar -->
-<div class="container search-bar">
-  <div class="search-bar-outer">
-    <div class="search-bar-inner">
+<!-- Tool bar -->
+<div class="container mt-5">
+  <div class="col-md-10 col-12 mx-auto">
+    <div class="row justify-content-between">
       <form action="/search">
-        <h4 class="mb-2">尋找餐廳：</h4>
         <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
-            value="{{keyword}}" aria-describedby="search-button">
-          <div class="input-group-append">
+          <div class="input-group-prepend">
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
+          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳名稱" aria-label="Restaurant Name..."
+            value="{{keyword}}" aria-describedby="search-button">
         </div>
+        {{!-- <div class="input-group">
+          <input for="sortBy" class="form-control" style="font-weight:700; vertical-align:bottom" value="Sort by ">
+          <div class="input-group-apend">
+            <select name="sortBy" id="sortBy" class="form-control" onchange="action='';submit();">
+              <option value="name">名稱</option>
+              <option value="category">類別</option>
+              <option value="rating">評分</option>
+            </select>
+          </div>
+        </div> --}}
       </form>
+      {{#if isSearch}}
+      {{else}}
+      <div class="dropdown">
+        <label for="sortBy" style="font-weight:700; vertical-align:text-top">Sort by</label>
+        <button class="btn btn-major dropdown-toggle ml-1" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">{{#if isSorted}} {{sortBy}}
+          {{else}}--{{/if}}</button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/">--</a>
+          <a class="dropdown-item" href="/sort/name">名稱</a>
+          <a class="dropdown-item" href="/sort/category">類別</a>
+          <a class="dropdown-item" href="/sort/rating">評分</a>
+        </div>
+      </div>
+      {{/if}}
     </div>
   </div>
 </div>
@@ -21,11 +45,6 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
-      <div>
-        <a class="mb-1 navbar-brand" href="/restaurants/new">Add a new lovely restaurant
-          <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        </a>
-      </div>
       <div class="card-columns">
         {{#each restaurants}}
         <a href="/restaurants/{{this._id}}" class="text-secondary">
